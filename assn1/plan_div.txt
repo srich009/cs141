@@ -1,0 +1,46 @@
+divide and conquer
+
+Step 1. Divide the points in S into two subsets, S1 and S2 by a vertical line x = c so that half the points lie to the left or on the line,
+and half the points lie to the right or on the line (c is the median of the x coordinates)
+
+Step 2. Recursively find the closest pairs for the left and right subsets. 
+
+Step 3 (Revised). Let d1 be the distance of the closest pair on the left and d2 be the distance of the closest pair on the right. 
+Let d = min{d1,d2}. Consider the vertical strip 2d-wide centered at x = c. Let Y be the subset of points in this vertical strip of width 2d. 
+
+Step 4. For each point p in Y, try to find points in Y that are within d units of p. Only 7 points in Y that follow p need to be considered
+
+
+#----------------------------------------------------------------------
+
+closestPair of (xP, yP)
+               where xP is P(1) .. P(N) sorted by x coordinate, and
+                     yP is P(1) .. P(N) sorted by y coordinate (ascending order)
+if N ≤ 3 then
+  return closest points of xP using brute-force algorithm
+else
+  xL ← points of xP from 1 to ⌈N/2⌉
+  xR ← points of xP from ⌈N/2⌉+1 to N
+  xm ← xP(⌈N/2⌉)x
+  yL ← { p ∈ yP : px ≤ xm }
+  yR ← { p ∈ yP : px > xm }
+  (dL, pairL) ← closestPair of (xL, yL)
+  (dR, pairR) ← closestPair of (xR, yR)
+  (dmin, pairMin) ← (dR, pairR)
+  if dL < dR then
+    (dmin, pairMin) ← (dL, pairL)
+  endif
+  yS ← { p ∈ yP : |xm - px| < dmin }
+  nS ← number of points in yS
+  (closest, closestPair) ← (dmin, pairMin)
+  for i from 1 to nS - 1
+    k ← i + 1
+    while k ≤ nS and yS(k)y - yS(i)y < dmin
+      if |yS(k) - yS(i)| < closest then
+        (closest, closestPair) ← (|yS(k) - yS(i)|, {yS(k), yS(i)})
+      endif
+      k ← k + 1
+    endwhile
+  endfor
+  return closest, closestPair
+endif

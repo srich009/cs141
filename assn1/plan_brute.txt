@@ -1,0 +1,27 @@
+Brute force:
+For each point
+    For each other point
+        if distance is less than minimum
+            set minimum to this distance
+            save the index of both points
+return the indices of the two points, and the distance
+
+#------------------------------------------------------
+
+bruteForceClosestPair of P(1), P(2), ... P(N)
+if N < 2 then
+  return ∞
+else
+  minDistance ← |P(1) - P(2)|
+  minPoints ← { P(1), P(2) }
+  foreach i ∈ [1, N-1]
+    foreach j ∈ [i+1, N]
+      if |P(i) - P(j)| < minDistance then
+        minDistance ← |P(i) - P(j)|
+        minPoints ← { P(i), P(j) } 
+      endif
+    endfor
+  endfor
+  return minDistance, minPoints
+ endif
+ 

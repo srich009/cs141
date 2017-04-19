@@ -5,20 +5,41 @@ import re
 pointRE=re.compile("(-?\\d+.?\\d*)\\s(-?\\d+.?\\d*)")
 
 def dist(p1, p2):
-    return sqrt(pow(p1[0]-p2[0],2) + pow(p1[1]-p2[1],2))
-
-#Run the divide-and-conquor nearest neighbor 
-def nearest_neighbor(points):
-    return nearest_neighbor_recursion(points)
+    return sqrt(pow(float(p1[0])-float(p2[0]),2) + pow(float(p1[1])-float(p2[1]),2)) # modified so casts to float
+#----------------------------------------------------------------------
 
 #Brute force version of the nearest neighbor algorithm, O(n**2)
 def brute_force_nearest_neighbor(points):
     min_distance=0
-    return min_distance
+    if len(points) < 2:
+        return min_distance
 
+    # initial distance of p1 and p2 
+    min_distance = dist(points[0],points[1]) 
+    
+    # nested loops
+    # point p, where p[0] = x, p[1] = y
+    # i = p1, j = p2
+    for i in range(0, len(points)-1):
+        cur_i = points[i]
+        for j in range(i+1, len(points)):
+            cur_j = points[j] 
+            cur_dist = dist(cur_i, cur_j)
+            if cur_dist < min_distance:
+                min_distance = cur_dist
+    return min_distance
+#----------------------------------------------------------------------
+
+#Run the divide-and-conquor nearest neighbor 
+def nearest_neighbor(points):
+    return nearest_neighbor_recursion(points)
+#----------------------------------------------------------------------
+
+#Divide and conquer recurse part
 def nearest_neighbor_recursion(points):
     min_distance=0
     return min_distance
+#----------------------------------------------------------------------
 
 def read_file(filename):
     points=[]
@@ -36,9 +57,11 @@ def read_file(filename):
             points.append((x,y))
     print(points)
     return points
+#----------------------------------------------------------------------
 
 def main(filename,algorithm):
     algorithm=algorithm[1:]
+    print algorithm
     points=read_file(filename)
     if algorithm =='dc':
         print("Divide and Conquer: ", nearest_neighbor(points))
@@ -47,6 +70,7 @@ def main(filename,algorithm):
     if algorithm == 'both':
         print("Divide and Conquer: ", nearest_neighbor(points))
         print("Brute Force: ", brute_force_nearest_neighbor(points))
+#----------------------------------------------------------------------
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
