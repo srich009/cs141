@@ -77,7 +77,7 @@ def nearest_neighbor_recursion(points):
                     if dist(stp[i],stp[j]) < min_distance:
                         min_distance = dist(stp[i],stp[j])
 
-    # return min_distance
+    return min_distance
 #----------------------------------------------------------------------
 
 def read_file(filename):
