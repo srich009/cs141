@@ -35,8 +35,6 @@ def brute_force_nearest_neighbor(points):
 def nearest_neighbor(points):
     x_pnt = sorted(points, key=itemgetter(0)) # points sorted by x
     y_pnt = sorted(points, key=itemgetter(1)) # points sorted by y
-    # print x_pnt
-    # print y_pnt
     return nearest_neighbor_recursion(x_pnt, y_pnt)
 #----------------------------------------------------------------------
 
@@ -60,13 +58,6 @@ def nearest_neighbor_recursion(x_pnt, y_pnt):
                 ypl.append(pnt) # add pnt y left half
             else:
                 ypr.append(pnt) # add pnt y right half
-
-        # print xpl
-        # print xpr
-        # print ypl
-        # print ypr
-        # print disr_l
-        # print dist_r
 
         dist_l = nearest_neighbor_recursion(xpl, ypl)
         dist_r = nearest_neighbor_recursion(xpr, ypr)

@@ -24,10 +24,8 @@ def brute_force_nearest_neighbor(points):
     # point p, where p[0] = x, p[1] = y
     # i = p1, j = p2
     for i in range(0, len(points)-1):
-        cur_i = points[i]
         for j in range(i+1, len(points)):
-            cur_j = points[j] 
-            cur_dist = dist(cur_i, cur_j)
+            cur_dist = dist(points[i], points[j])
             if cur_dist < min_distance:
                 min_distance = cur_dist
     return min_distance
@@ -41,11 +39,10 @@ def nearest_neighbor(points):
 #Divide and conquer recurse part
 def nearest_neighbor_recursion(points):
 
-    x_pnt = sorted(points, key=itemgetter(0)) # points sorted by x
-    y_pnt = sorted(points, key=itemgetter(1)) # points sorted by y
-
     min_distance = 0
     num_p = len(points)
+    x_pnt = sorted(points, key=itemgetter(0)) # points sorted by x
+    y_pnt = sorted(points, key=itemgetter(1)) # points sorted by y
 
     if num_p <= 3:
         return brute_force_nearest_neighbor(x_pnt)
@@ -55,24 +52,10 @@ def nearest_neighbor_recursion(points):
         xpr = x_pnt[half:]      # x points right half
 
         med = xpl[-1]           # median point
-        ypl, ypr = [], []       # y left half, y right half
 
-        # sort points by y
-        for pnt in y_pnt:
-            if pnt[0] <= med[0]: 
-                ypl.append(pnt) # add pnt y left half
-            else:
-                ypr.append(pnt) # add pnt y right half
-
-        dist_l = nearest_neighbor_recursion(ypl)
-        dist_r = nearest_neighbor_recursion(ypr)
-
-        # print xpl
-        # print xpr
-        # print ypl
-        # print ypr
-        # print disr_l
-        # print dist_r
+        dist_l = nearest_neighbor_recursion(xpl)
+        dist_r = nearest_neighbor_recursion(xpr)
+        dist_m = 0
 
         if dist_l < dist_r:
             dist_m = dist_l
@@ -94,7 +77,7 @@ def nearest_neighbor_recursion(points):
                     if dist(stp[i],stp[j]) < min_distance:
                         min_distance = dist(stp[i],stp[j])
 
-    return min_distance
+    # return min_distance
 #----------------------------------------------------------------------
 
 def read_file(filename):
@@ -111,7 +94,7 @@ def read_file(filename):
             x = float(point_match.group(1)) # cast float
             y = float(point_match.group(2)) # cast float
             points.append((x,y))
-    print(points)
+    # print(points)
     return points
 #----------------------------------------------------------------------
 
