@@ -1,5 +1,3 @@
-# use python || python3
-
 import sys
 from math import sqrt
 import re
@@ -35,25 +33,24 @@ def brute_force_nearest_neighbor(points):
 
 #Run the divide-and-conquor nearest neighbor 
 def nearest_neighbor(points):
-    return nearest_neighbor_recursion(points)
+    x_pnt = sorted(points, key=itemgetter(0)) # points sorted by x
+    y_pnt = sorted(points, key=itemgetter(1)) # points sorted by y
+    # print x_pnt
+    # print y_pnt
+    return nearest_neighbor_recursion(x_pnt, y_pnt)
 #----------------------------------------------------------------------
 
 #Divide and conquer recurse part
-def nearest_neighbor_recursion(points):
-
-    x_pnt = sorted(points, key=itemgetter(0)) # points sorted by x
-    y_pnt = sorted(points, key=itemgetter(1)) # points sorted by y
-
+def nearest_neighbor_recursion(x_pnt, y_pnt):
     min_distance = 0
-    num_p = len(points)
+    num_p = len(x_pnt)
 
     if num_p <= 3:
         return brute_force_nearest_neighbor(x_pnt)
     else:
-        half = int(num_p/2)     # half way
+        half = num_p/2          # half way
         xpl = x_pnt[:half]      # x points left half
         xpr = x_pnt[half:]      # x points right half
-
         med = xpl[-1]           # median point
         ypl, ypr = [], []       # y left half, y right half
 
@@ -64,15 +61,15 @@ def nearest_neighbor_recursion(points):
             else:
                 ypr.append(pnt) # add pnt y right half
 
-        dist_l = nearest_neighbor_recursion(ypl)
-        dist_r = nearest_neighbor_recursion(ypr)
-
         # print xpl
         # print xpr
         # print ypl
         # print ypr
         # print disr_l
         # print dist_r
+
+        dist_l = nearest_neighbor_recursion(xpl, ypl)
+        dist_r = nearest_neighbor_recursion(xpr, ypr)
 
         if dist_l < dist_r:
             dist_m = dist_l
