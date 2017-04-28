@@ -12,7 +12,7 @@ def dist(p1, p2):
     return sqrt(pow((p1[0]-p2[0]),2) + pow((p1[1]-p2[1]),2))
 #----------------------------------------------------------------------
 
-#Brute force version of the nearest neighbor algorithm, O(n**2)
+# Brute force version of the nearest neighbor algorithm, O(n**2)
 def brute_force_nearest_neighbor(points):
     min_distance = 0
     if len(points) < 2:
@@ -32,12 +32,12 @@ def brute_force_nearest_neighbor(points):
     return min_distance
 #----------------------------------------------------------------------
 
-#Run the divide-and-conquor nearest neighbor 
+# Run the divide-and-conquor nearest neighbor 
 def nearest_neighbor(points):
     return nearest_neighbor_recursion(points)
 #----------------------------------------------------------------------
 
-#Divide and conquer recurse part
+# Divide and conquer recurse part
 def nearest_neighbor_recursion(points):
 
     min_distance = 0
@@ -58,9 +58,9 @@ def nearest_neighbor_recursion(points):
         dist_r = nearest_neighbor_recursion(xpr)    # distance left half
         min_distance = min(dist_l, dist_r)
 
-        stp = [] # strip of points in the middle
+        stp = [] # strip for points in the middle
 
-        # fill strip of points
+        # fill strip with points
         for pnt in y_pnt:
             if abs(pnt[0] - med[0]) < min_distance:
                 stp.append(pnt)
@@ -78,15 +78,15 @@ def nearest_neighbor_recursion(points):
 #----------------------------------------------------------------------
 
 def read_file(filename):
-    points=[]
+    points = []
     # File format
     # x1 y1
     # x2 y2
     # ...
-    in_file=open(filename,'r')
+    in_file = open(filename,'r')
     for line in in_file.readlines():
         line = line.strip()
-        point_match=pointRE.match(line)
+        point_match = pointRE.match(line)
         if point_match:
             x = float(point_match.group(1)) # cast float
             y = float(point_match.group(2)) # cast float
@@ -96,44 +96,48 @@ def read_file(filename):
 #----------------------------------------------------------------------
 
 def main(filename,algorithm):
-    algorithm=algorithm[1:]
+    algorithm = algorithm[1:]
     print(algorithm)
     points = read_file(filename)
-    out_file = open("output.txt", "a+")
+    out_file = open( (filename[:-4] + "_distance.txt"), "a+")
 
     if algorithm == 'dc':
         dc = nearest_neighbor(points)
         out_file.write(str(dc))
         print("Divide and Conquer: ", dc)
+
     if algorithm == 'bf':
         bf = brute_force_nearest_neighbor(points)
         out_file.write(str(bf))
         print("Brute Force: ", bf)
+
     if algorithm == 'both':
         deec = nearest_neighbor(points)
         beef = brute_force_nearest_neighbor(points)
         out_file.write(str(deec) + "\n" + str(beef) )
         print("Divide and Conquer: ", deec)
         print("Brute Force: ", beef)
+
     if algorithm == 'time': # extra timing testing flag
         out_file.write(filename + "\n")
-        start = time.clock()
-        out_file.write("Brute Force: " + str(brute_force_nearest_neighbor(points)) + "\n")
-        fin = time.clock()
-        out_file.write("Time: " + str(fin-start) + " sec" + "\n")
         start = time.clock()
         out_file.write("Divide and Conquer: " + str(nearest_neighbor(points)) + "\n")
         fin = time.clock()
         out_file.write("Time: " + str(fin-start) + " sec"+ "\n")
         out_file.write("\n")
+        start = time.clock()
+        out_file.write("Brute Force: " + str(brute_force_nearest_neighbor(points)) + "\n")
+        fin = time.clock()
+        out_file.write("Time: " + str(fin-start) + " sec" + "\n")
+        
     out_file.close()
 #----------------------------------------------------------------------
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print("python assignment1.py -<dc|bf|both> <input_file>")
+        print("python nearest_neighbor.py -<dc|bf|both> <input_file>")
         quit(1)
     if len(sys.argv[1]) < 2:
-        print("python assignment1.py -<dc|bf|both> <input_file>")
+        print("python nearest_neighbor.py -<dc|bf|both> <input_file>")
         quit(1)
     main(sys.argv[2],sys.argv[1])
