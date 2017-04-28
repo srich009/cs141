@@ -1,8 +1,9 @@
 # use python || python3
 
-import sys
-from math import sqrt
 import re
+import sys
+import time
+from math import sqrt
 from operator import itemgetter
 
 pointRE = re.compile("(-?\\d+.?\\d*)\\s(-?\\d+.?\\d*)")
@@ -53,24 +54,20 @@ def nearest_neighbor_recursion(points):
 
         med = xpl[-1]           # median point
 
-        dist_l = nearest_neighbor_recursion(xpl)
-        dist_r = nearest_neighbor_recursion(xpr)
-        dist_m = 0
-
-        if dist_l < dist_r:
-            dist_m = dist_l
-        else: 
-            dist_m = dist_r
+        dist_l = nearest_neighbor_recursion(xpl)    # distance right half
+        dist_r = nearest_neighbor_recursion(xpr)    # distance left half
+        min_distance = min(dist_l, dist_r)
 
         stp = [] # strip of points in the middle
 
+        # fill strip of points
         for pnt in y_pnt:
-            if abs(pnt[0] - med[0]) < dist_m:
+            if abs(pnt[0] - med[0]) < min_distance:
                 stp.append(pnt)
 
         num_stp = len(stp)
-        min_distance = dist_m
 
+        # look in the strip for a smaller distance
         if num_stp > 1:
             for i in range(num_stp-1):
                 for j in range(i+1, min(i+8, num_stp)):
@@ -102,13 +99,34 @@ def main(filename,algorithm):
     algorithm=algorithm[1:]
     print(algorithm)
     points = read_file(filename)
+    out_file = open("output.txt", "a+")
+
     if algorithm == 'dc':
-        print("Divide and Conquer: ", nearest_neighbor(points))
+        dc = nearest_neighbor(points)
+        out_file.write(str(dc))
+        print("Divide and Conquer: ", dc)
     if algorithm == 'bf':
-        print("Brute Force: ", brute_force_nearest_neighbor(points))
+        bf = brute_force_nearest_neighbor(points)
+        out_file.write(str(bf))
+        print("Brute Force: ", bf)
     if algorithm == 'both':
-        print("Divide and Conquer: ", nearest_neighbor(points))
-        print("Brute Force: ", brute_force_nearest_neighbor(points))
+        deec = nearest_neighbor(points)
+        beef = brute_force_nearest_neighbor(points)
+        out_file.write(str(deec) + "\n" + str(beef) )
+        print("Divide and Conquer: ", deec)
+        print("Brute Force: ", beef)
+    if algorithm == 'time': # extra timing testing flag
+        out_file.write(filename + "\n")
+        start = time.clock()
+        out_file.write("Brute Force: " + str(brute_force_nearest_neighbor(points)) + "\n")
+        fin = time.clock()
+        out_file.write("Time: " + str(fin-start) + " sec" + "\n")
+        start = time.clock()
+        out_file.write("Divide and Conquer: " + str(nearest_neighbor(points)) + "\n")
+        fin = time.clock()
+        out_file.write("Time: " + str(fin-start) + " sec"+ "\n")
+        out_file.write("\n")
+    out_file.close()
 #----------------------------------------------------------------------
 
 if __name__ == '__main__':
