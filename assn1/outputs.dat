@@ -1,0 +1,26 @@
+input_10.txt
+Divide and Conquer: 2.8635642126552705
+Time: 0.0001449999999999993 sec
+
+Brute Force: 2.8635642126552705
+Time: 4.400000000000237e-05 sec
+
+input_100.txt
+Divide and Conquer: 9.91036114377263
+Time: 0.001177000000000001 sec
+
+Brute Force: 9.91036114377263
+Time: 0.004028 sec
+
+input_10e5.txt
+Divide and Conquer: 0.07858753081757049
+Time: 0.267964 sec
+
+Brute Force: 0.07858753081757049
+Time: 33.60436 sec
+
+input_10e6.txt
+Divide and Conquer: 0.01664331697710184
+Time: 3.35626 sec
+
+Brute Force: crashed after about 2 hours
