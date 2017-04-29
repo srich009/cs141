@@ -8,11 +8,8 @@ from operator import itemgetter
 
 pointRE = re.compile("(-?\\d+.?\\d*)\\s(-?\\d+.?\\d*)")
 
-# def dist(p1, p2):
-#     return sqrt(pow((p1[0]-p2[0]),2) + pow((p1[1]-p2[1]),2))
-
 def dist(p1, p2):
-    return (((p1[0]-p2[0])**2) + ((p1[1]-p2[1])**2))**(.5)
+    return (((p1[0]-p2[0])**2) + ((p1[1]-p2[1])**2))**(.5) # rewrite of distance formula
 #----------------------------------------------------------------------
 
 # Brute force version of the nearest neighbor algorithm, O(n**2)
