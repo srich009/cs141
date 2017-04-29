@@ -37,30 +37,31 @@ def brute_force_nearest_neighbor(points):
 
 # Run the divide-and-conquor nearest neighbor 
 def nearest_neighbor(points):
-    points = sorted(points, key=itemgetter(0)) # points sorted by x
     return nearest_neighbor_recursion(points)
 #----------------------------------------------------------------------
 
 # Divide and conquer recurse part
 def nearest_neighbor_recursion(points):
+
     min_distance = 0
     num_p = len(points)
+    x_pnt = sorted(points, key=itemgetter(0)) # points sorted by x
+    y_pnt = sorted(points, key=itemgetter(1)) # points sorted by y
 
     if num_p <= 3:
-        return brute_force_nearest_neighbor(points)
+        return brute_force_nearest_neighbor(x_pnt)
     else:
-        half = int(num_p/2)      # half way
-        xpl = points[:half]      # x points left half
-        xpr = points[half:]      # x points right half
+        half = int(num_p/2)     # half way
+        xpl = x_pnt[:half]      # x points left half
+        xpr = x_pnt[half:]      # x points right half
 
-        med = xpl[-1]            # median point
+        med = xpl[-1]           # median point
 
         dist_l = nearest_neighbor_recursion(xpl)    # distance right half
         dist_r = nearest_neighbor_recursion(xpr)    # distance left half
         min_distance = min(dist_l, dist_r)
 
         stp = [] # strip for points in the middle
-        y_pnt = sorted(points, key=itemgetter(1)) # points sorted by y
 
         # fill strip with points
         for pnt in y_pnt:
