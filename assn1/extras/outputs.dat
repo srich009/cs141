@@ -25,3 +25,6 @@ Time: 2.752909 sec
 
 Brute Force: 0.0166433169771
 Time: 5234.350677 sec
+
+--- note:
+time tend to vary for each execution. these samples mostly represent the average values.
