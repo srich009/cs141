@@ -3,7 +3,7 @@ import re
 import time
 
 graphRE=re.compile("(\\d+)\\s(\\d+)")
-edgeRE=re.compile("(\\d+)\\s(\\d+)\\s(\\d+)")
+edgeRE=re.compile("(\\d+)\\s(\\d+)\\s(-?\\d+)")
 
 vertices=[]
 edges=[]
