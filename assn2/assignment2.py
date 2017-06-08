@@ -12,23 +12,37 @@ edgeRE = re.compile("(\\d+)\\s(\\d+)\\s(-?\\d+)")
 
 vertices = []
 edges = []
+#-----------------------------------------------------------------------------------------------
+
+# The pathPairs list will contain the list of vertex pairs and their weights [((s,t),w),...]
+
+def fancyPrint(p):
+    j = 0
+    n = len(vertices)
+    for i in p:
+    	print(i)
+    	if j == n-1:
+    		print('')
+    		j = 0
+    		continue
+    	j += 1
 #------------------------------------------------------------------------------------------------
 
 # all points
 def BellmanFord(G):
+
     pathPairs = []
-    # The pathPairs list will contain the list of vertex pairs and their weights [((s,t),w),...]
-    # Fill in your Bellman-Ford algorithm here
-    
     temp = []  
-    n = len(G[0]) # number of verticies
+    n = len(vertices)
    
     for i in range(n):
         for j in range(n):
             temp = BelmanFord_SS(G,i)
-            pathPairs.append( ( (i,j) , int(temp[j]) ) )
+            pathPairs.append( ( (i,j) , float(temp[j]) ) )
 
-    print (pathPairs)
+    # fancyPrint(pathPairs)
+    print(pathPairs)
+
     return pathPairs
 #-------------------------------------------------------------------------------------------------
 
@@ -36,7 +50,7 @@ def BellmanFord(G):
 def BelmanFord_SS(G,s):
 
     d = []
-    n = len(G[0]) # number of verticies
+    n = len(vertices)
 
     # Step 1: initialize graph
     for i in range(n):
@@ -55,17 +69,16 @@ def BelmanFord_SS(G,s):
     for u in range(n):
         for v in range(n):
             if float(d[u]) + float(edges[u][v]) < float(d[v]):
+            	print("Error: negative cycle")
                 return false
 
     return d
 #-------------------------------------------------------------------------------------------------
 
 def FloydWarshall(G):
-    pathPairs = []
-    # The pathPairs list will contain the list of vertex pairs and their weights [((s,t),w),...]
-    # Fill in your Floyd-Warshall algorithm here
 
-    n = len(G[0]) # number of verticies
+    pathPairs = []
+    n = len(vertices)
     
     # set vertex to self = 0
     for i in range(n):
@@ -77,13 +90,15 @@ def FloydWarshall(G):
                 if float(edges[i][k]) == float('inf') or float(edges[k][j]) == float('inf'):
                     continue
                 if float(edges[i][j]) > float(edges[i][k]) + float(edges[k][j]):
-                    edges[i][j] = int(float(edges[i][k]) + float(edges[k][j]))
+                    edges[i][j] = float(edges[i][k]) + float(edges[k][j])
 
     for i in range(n):
         for j in range(n):
-            pathPairs.append( ( (i,j) , edges[i][j] ) )
+            pathPairs.append( ( (i,j) , float(edges[i][j]) ) )
 
-    print (pathPairs)
+    # fancyPrint(pathPairs)
+    print(pathPairs)
+
     return pathPairs
 #-------------------------------------------------------------------------------------------------
 
